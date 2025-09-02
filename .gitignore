@@ -1,0 +1,30 @@
+# Builds
+dist
+coverage
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Env
+.env*
+!.env.example
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+# Misc
+.DS_Store
+
+# Dependencies
+node_modules
+/.pnp
+.pnp.*
+
+# Caches
+.eslintcache
+.cache
+*.tsbuildinfo
