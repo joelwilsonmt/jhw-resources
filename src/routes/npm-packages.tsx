@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import siteConfig from '@/config/site.json';
 
 interface PackageLink {
   name: string;
@@ -308,11 +309,12 @@ function NpmPackagesPage() {
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
           <Package className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-bold tracking-tight">NPM Packages</h1>
+          <h1 className="text-4xl font-bold tracking-tight">
+            {siteConfig.pages.npmPackages.title}
+          </h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Curated collection of useful NPM packages for React development,
-          organized by functionality
+          {siteConfig.pages.npmPackages.subtitle}
         </p>
       </div>
 

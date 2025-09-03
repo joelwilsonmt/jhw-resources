@@ -8,56 +8,32 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/Card';
+import siteConfig from '@/config/site.json';
 
 function HomePage() {
-  const features = [
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: 'Lightning Fast',
-      description: 'Built with Vite and SWC for incredibly fast development.',
-    },
-    {
-      icon: <Heart className="h-6 w-6" />,
-      title: 'Developer Experience',
-      description: 'TypeScript, ESLint, Prettier, and Tailwind CSS configured.',
-    },
-    {
-      icon: <Github className="h-6 w-6" />,
-      title: 'Production Ready',
-      description: 'Shadcn/ui components with dark mode support included.',
-    },
-    {
-      icon: <FormInput className="h-6 w-6" />,
-      title: 'Form Management',
-      description: 'React Hook Form with Zod validation for robust forms.',
-      link: '/forms',
-    },
-    {
-      icon: <Search className="h-6 w-6" />,
-      title: 'Data Fetching',
-      description: 'TanStack Query for powerful server state management.',
-      link: '/api-demo',
-    },
-    {
-      icon: <Palette className="h-6 w-6" />,
-      title: 'Color Palette',
-      description:
-        'Extract color palettes from images with hex and OKLCH values.',
-      link: '/color-palette',
-    },
-  ];
+  const iconMap = {
+    Zap: <Zap className="h-6 w-6" />,
+    Heart: <Heart className="h-6 w-6" />,
+    Github: <Github className="h-6 w-6" />,
+    FormInput: <FormInput className="h-6 w-6" />,
+    Search: <Search className="h-6 w-6" />,
+    Palette: <Palette className="h-6 w-6" />,
+  };
+
+  const features = siteConfig.pages.home.features.map(feature => ({
+    ...feature,
+    icon: iconMap[feature.icon as keyof typeof iconMap],
+  }));
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Hero Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-          Modern React Starter
+          {siteConfig.pages.home.hero.title}
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          A production-ready React starter with TypeScript, Vite, Tailwind CSS,
-          Shadcn/ui components, and powerful libraries for forms and data
-          fetching.
+          {siteConfig.pages.home.hero.subtitle}
         </p>
       </div>
 
@@ -98,38 +74,12 @@ function HomePage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">React 19</div>
-              <div className="text-muted-foreground">UI Library</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">TypeScript</div>
-              <div className="text-muted-foreground">Type Safety</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">TanStack Router</div>
-              <div className="text-muted-foreground">Routing</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">TanStack Query</div>
-              <div className="text-muted-foreground">Data Fetching</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">React Hook Form</div>
-              <div className="text-muted-foreground">Forms</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">Zod</div>
-              <div className="text-muted-foreground">Validation</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">Vite + SWC</div>
-              <div className="text-muted-foreground">Build Tool</div>
-            </div>
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="font-medium">Shadcn/ui</div>
-              <div className="text-muted-foreground">Components</div>
-            </div>
+            {siteConfig.pages.home.techStack.map((tech, index) => (
+              <div key={index} className="p-3 bg-muted rounded-lg">
+                <div className="font-medium">{tech.name}</div>
+                <div className="text-muted-foreground">{tech.category}</div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>

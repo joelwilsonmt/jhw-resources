@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import ColorThief from 'colorthief';
+import siteConfig from '@/config/site.json';
 
 interface ColorData {
   hex: string;
@@ -127,13 +128,7 @@ function ColorPalettePage() {
   const copyAllColors = useCallback(async () => {
     if (colors.length === 0) return;
 
-    const colorLabels = [
-      'primary',
-      'secondary',
-      'tertiary',
-      'quaternary',
-      'quinary',
-    ];
+    const colorLabels = siteConfig.pages.colorPalette.colorLabels;
     const formattedColors = colors
       .map((color, index) => {
         const label = colorLabels[index] || `color-${index + 1}`;
@@ -156,12 +151,11 @@ function ColorPalettePage() {
         <div className="flex items-center justify-center gap-2">
           <Palette className="h-8 w-8 text-primary" />
           <h1 className="text-4xl font-bold tracking-tight">
-            Color Palette Extractor
+            {siteConfig.pages.colorPalette.title}
           </h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Upload an image or paste a URL to extract a beautiful color palette
-          with hex and OKLCH values
+          {siteConfig.pages.colorPalette.subtitle}
         </p>
       </div>
 
@@ -282,13 +276,7 @@ function ColorPalettePage() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {colors.map((color, index) => {
-                const colorLabels = [
-                  'primary',
-                  'secondary',
-                  'tertiary',
-                  'quaternary',
-                  'quinary',
-                ];
+                const colorLabels = siteConfig.pages.colorPalette.colorLabels;
                 const label = colorLabels[index] || `color-${index + 1}`;
 
                 return (

@@ -1,0 +1,106 @@
+{
+  "site": {
+    "title": "JHW Demos & Resources",
+    "description": "A production-ready React starter with TypeScript, Vite, Tailwind CSS, Shadcn/ui components, and powerful libraries for forms and data fetching.",
+    "tagline": "Modern React Starter"
+  },
+  "navigation": {
+    "main": [
+      {
+        "label": "Home",
+        "to": "/",
+        "type": "link"
+      },
+      {
+        "label": "Demos",
+        "type": "dropdown",
+        "items": [
+          { "to": "/forms", "label": "Forms" },
+          { "to": "/api-demo", "label": "API Demo" }
+        ]
+      },
+      {
+        "label": "Resources",
+        "type": "dropdown",
+        "items": [
+          { "to": "/color-palette", "label": "Color Palette" },
+          { "to": "/npm-packages", "label": "NPM Packages" }
+        ]
+      }
+    ]
+  },
+  "pages": {
+    "home": {
+      "hero": {
+        "title": "JHW Demos & Resources",
+        "subtitle": "A production-ready React starter with TypeScript, Vite, Tailwind CSS, Shadcn/ui components, and powerful libraries for forms and data fetching."
+      },
+      "features": [
+        {
+          "title": "Lightning Fast",
+          "description": "Built with Vite and SWC for incredibly fast development.",
+          "icon": "Zap",
+          "link": null
+        },
+        {
+          "title": "Developer Experience",
+          "description": "TypeScript, ESLint, Prettier, and Tailwind CSS configured.",
+          "icon": "Heart",
+          "link": null
+        },
+        {
+          "title": "Production Ready",
+          "description": "Shadcn/ui components with dark mode support included.",
+          "icon": "Github",
+          "link": null
+        },
+        {
+          "title": "Form Management",
+          "description": "React Hook Form with Zod validation for robust forms.",
+          "icon": "FormInput",
+          "link": "/forms"
+        },
+        {
+          "title": "Data Fetching",
+          "description": "TanStack Query for powerful server state management.",
+          "icon": "Search",
+          "link": "/api-demo"
+        },
+        {
+          "title": "Color Palette",
+          "description": "Extract color palettes from images with hex and OKLCH values.",
+          "icon": "Palette",
+          "link": "/color-palette"
+        }
+      ],
+      "techStack": [
+        { "name": "React 19", "category": "UI Library" },
+        { "name": "TypeScript", "category": "Type Safety" },
+        { "name": "TanStack Router", "category": "Routing" },
+        { "name": "TanStack Query", "category": "Data Fetching" },
+        { "name": "React Hook Form", "category": "Forms" },
+        { "name": "Zod", "category": "Validation" },
+        { "name": "Vite + SWC", "category": "Build Tool" },
+        { "name": "Shadcn/ui", "category": "Components" }
+      ]
+    },
+    "colorPalette": {
+      "title": "Color Palette Extractor",
+      "subtitle": "Upload an image or paste a URL to extract a beautiful color palette with hex and OKLCH values",
+      "colorLabels": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "quaternary",
+        "quinary"
+      ]
+    },
+    "npmPackages": {
+      "title": "NPM Packages",
+      "subtitle": "Curated collection of useful NPM packages for React development, organized by functionality"
+    }
+  },
+  "footer": {
+    "text": "Built with ❤️ using modern web technologies."
+  }
+}

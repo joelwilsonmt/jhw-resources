@@ -2,6 +2,7 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { NavigationDropdown } from '@/components/NavigationDropdown';
 import { Toaster } from 'sonner';
+import siteConfig from '@/config/site.json';
 
 export const Route = createRootRoute({
   component: () => (
@@ -15,35 +16,32 @@ export const Route = createRootRoute({
               to="/"
               className="text-lg font-semibold hover:text-primary transition-colors"
             >
-              JHW Resources / Demo
+              {siteConfig.site.title}
             </Link>
           </div>
 
           {/* Center: Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className="text-sm font-medium hover:text-primary transition-colors"
-              activeProps={{
-                className: 'text-primary',
-              }}
-            >
-              Home
-            </Link>
-            <NavigationDropdown
-              label="Demos"
-              items={[
-                { to: '/forms', label: 'Forms' },
-                { to: '/api-demo', label: 'API Demo' },
-              ]}
-            />
-            <NavigationDropdown
-              label="Resources"
-              items={[
-                { to: '/color-palette', label: 'Color Palette' },
-                { to: '/npm-packages', label: 'NPM Packages' },
-              ]}
-            />
+            {siteConfig.navigation.main.map((navItem: any, index) =>
+              navItem.type === 'link' ? (
+                <Link
+                  key={index}
+                  to={navItem.to as any}
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  activeProps={{
+                    className: 'text-primary',
+                  }}
+                >
+                  {navItem.label}
+                </Link>
+              ) : navItem.type === 'dropdown' ? (
+                <NavigationDropdown
+                  key={index}
+                  label={navItem.label}
+                  items={navItem.items}
+                />
+              ) : null
+            )}
           </nav>
 
           {/* Right: Theme Toggle */}
@@ -62,7 +60,7 @@ export const Route = createRootRoute({
       <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-14 md:flex-row px-4">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built with ❤️ using modern web technologies.
+            {siteConfig.footer.text}
           </p>
         </div>
       </footer>
