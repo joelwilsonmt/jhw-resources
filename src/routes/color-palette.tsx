@@ -12,6 +12,9 @@ import {
 } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { PageTransition } from '@/components/PageTransition';
+import { AnimatedText } from '@/components/AnimatedText';
+import { motion } from 'motion/react';
 import ColorThief from 'colorthief';
 import siteConfig from '@/config/site.json';
 
@@ -146,176 +149,190 @@ function ColorPalettePage() {
   }, [colors]);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-2">
-          <Palette className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-bold tracking-tight">
-            {siteConfig.pages.colorPalette.title}
-          </h1>
+    <PageTransition>
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="text-center space-y-4">
+          <AnimatedText
+            type="slideRight"
+            className="flex items-center justify-center gap-2"
+          >
+            <Palette className="h-8 w-8 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight">
+              {siteConfig.pages.colorPalette.title}
+            </h1>
+          </AnimatedText>
+          <AnimatedText
+            type="fadeIn"
+            delay={0.3}
+            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          >
+            <p>{siteConfig.pages.colorPalette.subtitle}</p>
+          </AnimatedText>
         </div>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          {siteConfig.pages.colorPalette.subtitle}
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Upload Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Upload className="h-5 w-5" />
-              Upload Image
-            </CardTitle>
-            <CardDescription>
-              Select an image file from your device
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div
-              className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  fileInputRef.current?.click();
-                }
-              }}
-              role="button"
-              tabIndex={0}
-            >
-              <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Click to upload or drag and drop
-              </p>
-              <p className="text-xs text-muted-foreground">
-                PNG, JPG, GIF up to 10MB
-              </p>
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-          </CardContent>
-        </Card>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          {/* Upload Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="h-5 w-5" />
+                Upload Image
+              </CardTitle>
+              <CardDescription>
+                Select an image file from your device
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground mb-2">
+                  Click to upload or drag and drop
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  PNG, JPG, GIF up to 10MB
+                </p>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+            </CardContent>
+          </Card>
 
-        {/* URL Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <LinkIcon className="h-5 w-5" />
-              Image URL
-            </CardTitle>
-            <CardDescription>Paste a direct link to an image</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleUrlSubmit} className="space-y-4">
+          {/* URL Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LinkIcon className="h-5 w-5" />
+                Image URL
+              </CardTitle>
+              <CardDescription>Paste a direct link to an image</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleUrlSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="imageUrl">Image URL</Label>
+                  <Input
+                    id="imageUrl"
+                    type="url"
+                    placeholder="https://example.com/image.jpg"
+                    value={imageUrl}
+                    onChange={e => setImageUrl(e.target.value)}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={!imageUrl.trim() || loading}
+                  className="w-full"
+                >
+                  {loading ? 'Loading...' : 'Extract Colors'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Hidden image for color extraction */}
+        <img
+          ref={imageRef}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          style={{ display: 'none' }}
+          crossOrigin="anonymous"
+          alt=""
+        />
+
+        {/* Error Message */}
+        {error && (
+          <Card className="border-destructive">
+            <CardContent className="pt-6">
+              <p className="text-destructive text-center">{error}</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Color Palette Results */}
+        {colors.length > 0 && (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <div>
-                <Label htmlFor="imageUrl">Image URL</Label>
-                <Input
-                  id="imageUrl"
-                  type="url"
-                  placeholder="https://example.com/image.jpg"
-                  value={imageUrl}
-                  onChange={e => setImageUrl(e.target.value)}
-                />
+                <CardTitle>Extracted Color Palette</CardTitle>
+                <CardDescription>
+                  Click any color value to copy it to your clipboard
+                </CardDescription>
               </div>
               <Button
-                type="submit"
-                disabled={!imageUrl.trim() || loading}
-                className="w-full"
+                onClick={copyAllColors}
+                variant="outline"
+                className="flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                {loading ? 'Loading...' : 'Extract Colors'}
+                <Copy className="h-4 w-4" />
+                Copy All Colors
               </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                {colors.map((color, index) => {
+                  const colorLabels = siteConfig.pages.colorPalette.colorLabels;
+                  const label = colorLabels[index] || `color-${index + 1}`;
 
-      {/* Hidden image for color extraction */}
-      <img
-        ref={imageRef}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-        style={{ display: 'none' }}
-        crossOrigin="anonymous"
-        alt=""
-      />
-
-      {/* Error Message */}
-      {error && (
-        <Card className="border-destructive">
-          <CardContent className="pt-6">
-            <p className="text-destructive text-center">{error}</p>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Color Palette Results */}
-      {colors.length > 0 && (
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <div>
-              <CardTitle>Extracted Color Palette</CardTitle>
-              <CardDescription>
-                Click any color value to copy it to your clipboard
-              </CardDescription>
-            </div>
-            <Button
-              onClick={copyAllColors}
-              variant="outline"
-              className="flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors"
-            >
-              <Copy className="h-4 w-4" />
-              Copy All Colors
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-              {colors.map((color, index) => {
-                const colorLabels = siteConfig.pages.colorPalette.colorLabels;
-                const label = colorLabels[index] || `color-${index + 1}`;
-
-                return (
-                  <div key={index} className="space-y-3">
-                    <div
-                      className="w-full h-20 rounded-lg border shadow-sm"
-                      style={{ backgroundColor: color.hex }}
-                    />
-                    <div className="space-y-2">
-                      <div className="text-sm font-medium text-center capitalize text-muted-foreground">
-                        {label}
+                  return (
+                    <div key={index} className="space-y-3">
+                      <div
+                        className="w-full h-20 rounded-lg border shadow-sm"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium text-center capitalize text-muted-foreground">
+                          {label}
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full justify-between font-mono text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
+                          onClick={() => copyToClipboard(color.hex)}
+                        >
+                          {color.hex}
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full justify-between font-mono text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
+                          onClick={() => copyToClipboard(color.oklch)}
+                        >
+                          <span className="truncate">{color.oklch}</span>
+                          <Copy className="h-3 w-3" />
+                        </Button>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full justify-between font-mono text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
-                        onClick={() => copyToClipboard(color.hex)}
-                      >
-                        {color.hex}
-                        <Copy className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full justify-between font-mono text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
-                        onClick={() => copyToClipboard(color.oklch)}
-                      >
-                        <span className="truncate">{color.oklch}</span>
-                        <Copy className="h-3 w-3" />
-                      </Button>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </PageTransition>
   );
 }
 

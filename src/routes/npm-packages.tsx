@@ -20,6 +20,8 @@ import {
   CardTitle,
 } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { PageTransition } from '@/components/PageTransition';
+import { AnimatedText } from '@/components/AnimatedText';
 import siteConfig from '@/config/site.json';
 
 interface PackageLink {
@@ -305,118 +307,127 @@ function NpmPackagesPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-3">
-          <Package className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-bold tracking-tight">
-            {siteConfig.pages.npmPackages.title}
-          </h1>
+    <PageTransition>
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div className="text-center space-y-4">
+          <AnimatedText
+            type="slideLeft"
+            className="flex items-center justify-center gap-3"
+          >
+            <Package className="h-8 w-8 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight">
+              {siteConfig.pages.npmPackages.title}
+            </h1>
+          </AnimatedText>
+          <AnimatedText
+            type="fadeIn"
+            delay={0.3}
+            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+          >
+            <p>{siteConfig.pages.npmPackages.subtitle}</p>
+          </AnimatedText>
         </div>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          {siteConfig.pages.npmPackages.subtitle}
-        </p>
-      </div>
 
-      {/* Package Categories */}
-      <div className="space-y-8">
-        {categories.map((category, categoryIndex) => (
-          <Card key={categoryIndex}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                {category.icon}
-                {category.title}
-              </CardTitle>
-              <CardDescription>
-                {category.packages.length} packages available
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {category.packages.map((pkg, pkgIndex) => (
-                  <div
-                    key={pkgIndex}
-                    className="border rounded-lg p-4 hover:shadow-md transition-shadow space-y-3"
-                  >
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-medium text-sm leading-tight">
-                        {pkg.name}
-                      </h3>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 w-6 p-0 shrink-0"
-                        onClick={() => window.open(pkg.url, '_blank')}
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {pkg.description}
-                    </p>
-                    {pkg.additionalLinks && (
-                      <div className="flex flex-wrap gap-2">
-                        {pkg.additionalLinks.map((link, linkIndex) => (
-                          <Button
-                            key={linkIndex}
-                            variant="outline"
-                            size="sm"
-                            className="h-6 text-xs px-2"
-                            onClick={() => window.open(link.url, '_blank')}
-                          >
-                            {link.label}
-                          </Button>
-                        ))}
+        {/* Package Categories */}
+        <div className="space-y-8">
+          {categories.map((category, categoryIndex) => (
+            <Card key={categoryIndex}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  {category.icon}
+                  {category.title}
+                </CardTitle>
+                <CardDescription>
+                  {category.packages.length} packages available
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {category.packages.map((pkg, pkgIndex) => (
+                    <div
+                      key={pkgIndex}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow space-y-3"
+                    >
+                      <div className="flex items-start justify-between">
+                        <h3 className="font-medium text-sm leading-tight">
+                          {pkg.name}
+                        </h3>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 shrink-0"
+                          onClick={() => window.open(pkg.url, '_blank')}
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </Button>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Additional Resources */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Globe className="h-5 w-5" />
-            Additional Resources
-          </CardTitle>
-          <CardDescription>
-            Helpful tools, converters, and educational resources
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {resources.map((resource, index) => (
-              <div
-                key={index}
-                className="border rounded-lg p-4 hover:shadow-md transition-shadow space-y-3"
-              >
-                <div className="flex items-start justify-between">
-                  <h3 className="font-medium text-sm leading-tight">
-                    {resource.name}
-                  </h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 w-6 p-0 shrink-0"
-                    onClick={() => window.open(resource.url, '_blank')}
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                  </Button>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {pkg.description}
+                      </p>
+                      {pkg.additionalLinks && (
+                        <div className="flex flex-wrap gap-2">
+                          {pkg.additionalLinks.map((link, linkIndex) => (
+                            <Button
+                              key={linkIndex}
+                              variant="outline"
+                              size="sm"
+                              className="h-6 text-xs px-2"
+                              onClick={() => window.open(link.url, '_blank')}
+                            >
+                              {link.label}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {resource.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Additional Resources */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Globe className="h-5 w-5" />
+              Additional Resources
+            </CardTitle>
+            <CardDescription>
+              Helpful tools, converters, and educational resources
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {resources.map((resource, index) => (
+                <div
+                  key={index}
+                  className="border rounded-lg p-4 hover:shadow-md transition-shadow space-y-3"
+                >
+                  <div className="flex items-start justify-between">
+                    <h3 className="font-medium text-sm leading-tight">
+                      {resource.name}
+                    </h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 shrink-0"
+                      onClick={() => window.open(resource.url, '_blank')}
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {resource.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </PageTransition>
   );
 }
 

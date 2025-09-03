@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { PageTransition } from '@/components/PageTransition';
+import { AnimatedText } from '@/components/AnimatedText';
 import {
   Loader2,
   Search,
@@ -19,6 +21,7 @@ import {
   Heart,
   Shield,
   Swords,
+  Database,
 } from 'lucide-react';
 
 interface Pokemon {
@@ -160,215 +163,227 @@ function PokemonPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Pokemon API Demo</h1>
-        <p className="text-muted-foreground">
-          TanStack Query with Pokemon API showcase
-        </p>
-      </div>
+    <PageTransition>
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <AnimatedText
+            type="slideDown"
+            className="flex items-center justify-center gap-2"
+          >
+            <Database className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold">Pokemon API Demo</h1>
+          </AnimatedText>
+          <AnimatedText
+            type="fadeIn"
+            delay={0.3}
+            className="text-muted-foreground"
+          >
+            <p>TanStack Query with Pokemon API showcase</p>
+          </AnimatedText>
+        </div>
 
-      {/* Search Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Pokemon Search
-          </CardTitle>
-          <CardDescription>
-            Search for any Pokemon by name or ID (1-151)
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-3 mb-4">
-            <div className="flex-1">
-              <Label htmlFor="search" className="sr-only">
-                Pokemon name or ID
-              </Label>
-              <Input
-                id="search"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Enter Pokemon name or ID..."
-                onKeyPress={e => e.key === 'Enter' && handleSearch()}
-              />
-            </div>
-            <Button onClick={handleSearch} disabled={isFetching}>
-              {isFetching ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Search className="h-4 w-4" />
-              )}
-              Search
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleRandomPokemon}
-              disabled={listLoading}
-            >
-              <RefreshCw className="h-4 w-4" />
-              Random
-            </Button>
-          </div>
-
-          {pokemonError && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-              Error: {pokemonError.message}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Pokemon Details */}
-      {pokemonLoading ? (
+        {/* Search Section */}
         <Card>
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="text-center space-y-2">
-              <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-              <p className="text-muted-foreground">Loading Pokemon...</p>
-            </div>
-          </CardContent>
-        </Card>
-      ) : pokemon ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Pokemon Info Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span className="capitalize text-2xl">{pokemon.name}</span>
-                <span className="text-muted-foreground">
-                  #{pokemon.id.toString().padStart(3, '0')}
-                </span>
-              </CardTitle>
-              <div className="flex gap-2">
-                {pokemon.types.map(type => (
-                  <span
-                    key={type.type.name}
-                    className={`px-3 py-1 rounded-full text-white text-sm font-medium capitalize ${getTypeColor(
-                      type.type.name
-                    )}`}
-                  >
-                    {type.type.name}
-                  </span>
-                ))}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center">
-                <img
-                  src={
-                    pokemon.sprites.other['official-artwork'].front_default ||
-                    pokemon.sprites.front_default
-                  }
-                  alt={pokemon.name}
-                  className="w-48 h-48 mx-auto object-contain"
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              Pokemon Search
+            </CardTitle>
+            <CardDescription>
+              Search for any Pokemon by name or ID (1-151)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-3 mb-4">
+              <div className="flex-1">
+                <Label htmlFor="search" className="sr-only">
+                  Pokemon name or ID
+                </Label>
+                <Input
+                  id="search"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  placeholder="Enter Pokemon name or ID..."
+                  onKeyPress={e => e.key === 'Enter' && handleSearch()}
                 />
               </div>
+              <Button onClick={handleSearch} disabled={isFetching}>
+                {isFetching ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+                Search
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleRandomPokemon}
+                disabled={listLoading}
+              >
+                <RefreshCw className="h-4 w-4" />
+                Random
+              </Button>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">Height:</span>{' '}
-                  {(pokemon.height / 10).toFixed(1)}m
-                </div>
-                <div>
-                  <span className="font-medium">Weight:</span>{' '}
-                  {(pokemon.weight / 10).toFixed(1)}kg
-                </div>
+            {pokemonError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                Error: {pokemonError.message}
               </div>
+            )}
+          </CardContent>
+        </Card>
 
-              <div>
-                <h4 className="font-medium mb-2">Abilities</h4>
-                <div className="flex flex-wrap gap-2">
-                  {pokemon.abilities.map(ability => (
+        {/* Pokemon Details */}
+        {pokemonLoading ? (
+          <Card>
+            <CardContent className="flex items-center justify-center py-12">
+              <div className="text-center space-y-2">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+                <p className="text-muted-foreground">Loading Pokemon...</p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : pokemon ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Pokemon Info Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="capitalize text-2xl">{pokemon.name}</span>
+                  <span className="text-muted-foreground">
+                    #{pokemon.id.toString().padStart(3, '0')}
+                  </span>
+                </CardTitle>
+                <div className="flex gap-2">
+                  {pokemon.types.map(type => (
                     <span
-                      key={ability.ability.name}
-                      className={`px-2 py-1 rounded text-xs ${
-                        ability.is_hidden
-                          ? 'bg-purple-100 text-purple-800 border border-purple-200'
-                          : 'bg-muted text-muted-foreground'
-                      }`}
+                      key={type.type.name}
+                      className={`px-3 py-1 rounded-full text-white text-sm font-medium capitalize ${getTypeColor(
+                        type.type.name
+                      )}`}
                     >
-                      {ability.ability.name.replace('-', ' ')}
-                      {ability.is_hidden && ' (Hidden)'}
+                      {type.type.name}
                     </span>
                   ))}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <img
+                    src={
+                      pokemon.sprites.other['official-artwork'].front_default ||
+                      pokemon.sprites.front_default
+                    }
+                    alt={pokemon.name}
+                    className="w-48 h-48 mx-auto object-contain"
+                  />
+                </div>
 
-          {/* Stats Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Base Stats</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {pokemon.stats.map(stat => {
-                  const maxStat = 255; // Theoretical max for most stats
-                  const percentage = (stat.base_stat / maxStat) * 100;
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="font-medium">Height:</span>{' '}
+                    {(pokemon.height / 10).toFixed(1)}m
+                  </div>
+                  <div>
+                    <span className="font-medium">Weight:</span>{' '}
+                    {(pokemon.weight / 10).toFixed(1)}kg
+                  </div>
+                </div>
 
-                  return (
-                    <div key={stat.stat.name} className="space-y-1">
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2 capitalize">
-                          {getStatIcon(stat.stat.name)}
-                          {stat.stat.name.replace('-', ' ')}
+                <div>
+                  <h4 className="font-medium mb-2">Abilities</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {pokemon.abilities.map(ability => (
+                      <span
+                        key={ability.ability.name}
+                        className={`px-2 py-1 rounded text-xs ${
+                          ability.is_hidden
+                            ? 'bg-purple-100 text-purple-800 border border-purple-200'
+                            : 'bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        {ability.ability.name.replace('-', ' ')}
+                        {ability.is_hidden && ' (Hidden)'}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Stats Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Base Stats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {pokemon.stats.map(stat => {
+                    const maxStat = 255; // Theoretical max for most stats
+                    const percentage = (stat.base_stat / maxStat) * 100;
+
+                    return (
+                      <div key={stat.stat.name} className="space-y-1">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2 capitalize">
+                            {getStatIcon(stat.stat.name)}
+                            {stat.stat.name.replace('-', ' ')}
+                          </div>
+                          <span className="font-medium">{stat.base_stat}</span>
                         </div>
-                        <span className="font-medium">{stat.base_stat}</span>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div
+                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${Math.min(percentage, 100)}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div
-                          className="bg-primary h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${Math.min(percentage, 100)}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : null}
 
-      {/* Features Info */}
-      <Card>
-        <CardHeader>
-          <CardTitle>TanStack Query Features Demonstrated</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
-              <h4 className="font-medium">Data Fetching</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>• Automatic caching and deduplication</li>
-                <li>• Loading and error states</li>
-                <li>• Background refetching</li>
-                <li>• Query invalidation</li>
-              </ul>
+        {/* Features Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle>TanStack Query Features Demonstrated</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="space-y-2">
+                <h4 className="font-medium">Data Fetching</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>• Automatic caching and deduplication</li>
+                  <li>• Loading and error states</li>
+                  <li>• Background refetching</li>
+                  <li>• Query invalidation</li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-medium">User Experience</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>• Optimistic updates</li>
+                  <li>• Stale-while-revalidate</li>
+                  <li>• Offline support</li>
+                  <li>• DevTools integration</li>
+                </ul>
+              </div>
             </div>
-            <div className="space-y-2">
-              <h4 className="font-medium">User Experience</h4>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>• Optimistic updates</li>
-                <li>• Stale-while-revalidate</li>
-                <li>• Offline support</li>
-                <li>• DevTools integration</li>
-              </ul>
+            <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                <strong>Cache Status:</strong> Pokemon data is cached
+                automatically. Try searching for the same Pokemon multiple times
+                to see instant loading!
+              </p>
             </div>
-          </div>
-          <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground">
-              <strong>Cache Status:</strong> Pokemon data is cached
-              automatically. Try searching for the same Pokemon multiple times
-              to see instant loading!
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </PageTransition>
   );
 }
 
