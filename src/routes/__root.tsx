@@ -39,7 +39,10 @@ export const Route = createRootRoute({
             />
             <NavigationDropdown
               label="Resources"
-              items={[{ to: '/color-palette', label: 'Color Palette' }]}
+              items={[
+                { to: '/color-palette', label: 'Color Palette' },
+                { to: '/npm-packages', label: 'NPM Packages' },
+              ]}
             />
           </nav>
 
