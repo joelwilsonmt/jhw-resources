@@ -1,5 +1,7 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { NavigationDropdown } from '@/components/NavigationDropdown';
+import { Toaster } from 'sonner';
 
 export const Route = createRootRoute({
   component: () => (
@@ -13,7 +15,7 @@ export const Route = createRootRoute({
               to="/"
               className="text-lg font-semibold hover:text-primary transition-colors"
             >
-              2025 React Starter
+              JHW Resources / Demo
             </Link>
           </div>
 
@@ -28,24 +30,17 @@ export const Route = createRootRoute({
             >
               Home
             </Link>
-            <Link
-              to="/forms"
-              className="text-sm font-medium hover:text-primary transition-colors"
-              activeProps={{
-                className: 'text-primary',
-              }}
-            >
-              Forms
-            </Link>
-            <Link
-              to="/api-demo"
-              className="text-sm font-medium hover:text-primary transition-colors"
-              activeProps={{
-                className: 'text-primary',
-              }}
-            >
-              API Demo
-            </Link>
+            <NavigationDropdown
+              label="Demos"
+              items={[
+                { to: '/forms', label: 'Forms' },
+                { to: '/api-demo', label: 'API Demo' },
+              ]}
+            />
+            <NavigationDropdown
+              label="Resources"
+              items={[{ to: '/color-palette', label: 'Color Palette' }]}
+            />
           </nav>
 
           {/* Right: Theme Toggle */}
@@ -68,6 +63,7 @@ export const Route = createRootRoute({
           </p>
         </div>
       </footer>
+      <Toaster />
     </div>
   ),
 });

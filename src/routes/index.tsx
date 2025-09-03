@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState } from 'react';
-import { Github, Heart, Zap, FormInput, Search } from 'lucide-react';
+import { Github, Heart, Zap, FormInput, Search, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import {
   Card,
@@ -11,8 +10,6 @@ import {
 } from '@/components/ui/Card';
 
 function HomePage() {
-  const [count, setCount] = useState(0);
-
   const features = [
     {
       icon: <Zap className="h-6 w-6" />,
@@ -23,6 +20,11 @@ function HomePage() {
       icon: <Heart className="h-6 w-6" />,
       title: 'Developer Experience',
       description: 'TypeScript, ESLint, Prettier, and Tailwind CSS configured.',
+    },
+    {
+      icon: <Github className="h-6 w-6" />,
+      title: 'Production Ready',
+      description: 'Shadcn/ui components with dark mode support included.',
     },
     {
       icon: <FormInput className="h-6 w-6" />,
@@ -37,9 +39,11 @@ function HomePage() {
       link: '/api-demo',
     },
     {
-      icon: <Github className="h-6 w-6" />,
-      title: 'Production Ready',
-      description: 'Shadcn/ui components with dark mode support included.',
+      icon: <Palette className="h-6 w-6" />,
+      title: 'Color Palette',
+      description:
+        'Extract color palettes from images with hex and OKLCH values.',
+      link: '/color-palette',
     },
   ];
 
@@ -56,33 +60,6 @@ function HomePage() {
           fetching.
         </p>
       </div>
-
-      {/* Interactive Counter Card */}
-      <Card className="max-w-md mx-auto">
-        <CardHeader className="text-center">
-          <CardTitle>Interactive Counter</CardTitle>
-          <CardDescription>
-            Test the Shadcn/ui components and state management
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <div className="text-6xl font-bold text-primary">{count}</div>
-          <div className="flex gap-2 justify-center">
-            <Button onClick={() => setCount(count => count + 1)}>
-              Increment
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setCount(count => Math.max(0, count - 1))}
-            >
-              Decrement
-            </Button>
-            <Button variant="secondary" onClick={() => setCount(0)}>
-              Reset
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Features Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -157,6 +134,38 @@ function HomePage() {
         </CardContent>
       </Card>
 
+      {/* Color Test */}
+      <Card>
+        <CardHeader>
+          <CardTitle>🎨 Color System Test</CardTitle>
+          <CardDescription>
+            Testing if Tailwind color classes are working properly
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="bg-primary text-primary-foreground p-4 rounded-lg text-center">
+              bg-primary
+            </div>
+            <div className="bg-secondary text-secondary-foreground p-4 rounded-lg text-center">
+              bg-secondary
+            </div>
+            <div className="bg-muted text-muted-foreground p-4 rounded-lg text-center">
+              bg-muted
+            </div>
+            <div className="bg-accent text-accent-foreground p-4 rounded-lg text-center">
+              bg-accent
+            </div>
+            <div className="bg-card text-card-foreground p-4 rounded-lg text-center border">
+              bg-card
+            </div>
+            <div className="bg-destructive text-destructive-foreground p-4 rounded-lg text-center">
+              bg-destructive
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Getting Started */}
       <Card>
         <CardHeader>
@@ -170,7 +179,7 @@ function HomePage() {
             <div className="text-muted-foreground">
               # Start development server
             </div>
-            <div>bun dev</div>
+            <div>pnpm dev</div>
           </div>
           <div className="flex gap-2">
             <Link to="/forms">
@@ -183,6 +192,12 @@ function HomePage() {
               <Button variant="outline">
                 <Search className="h-4 w-4 mr-2" />
                 API Demo
+              </Button>
+            </Link>
+            <Link to="/color-palette">
+              <Button variant="outline">
+                <Palette className="h-4 w-4 mr-2" />
+                Color Palette
               </Button>
             </Link>
           </div>

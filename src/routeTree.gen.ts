@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root';
 import { Route as FormsRouteImport } from './routes/forms';
+import { Route as ColorPaletteRouteImport } from './routes/color-palette';
 import { Route as ApiDemoRouteImport } from './routes/api-demo';
 import { Route as IndexRouteImport } from './routes/index';
 
 const FormsRoute = FormsRouteImport.update({
   id: '/forms',
   path: '/forms',
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ColorPaletteRoute = ColorPaletteRouteImport.update({
+  id: '/color-palette',
+  path: '/color-palette',
   getParentRoute: () => rootRouteImport,
 } as any);
 const ApiDemoRoute = ApiDemoRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
+  '/color-palette': typeof ColorPaletteRoute;
   '/forms': typeof FormsRoute;
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
+  '/color-palette': typeof ColorPaletteRoute;
   '/forms': typeof FormsRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
+  '/color-palette': typeof ColorPaletteRoute;
   '/forms': typeof FormsRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/api-demo' | '/forms';
+  fullPaths: '/' | '/api-demo' | '/color-palette' | '/forms';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/api-demo' | '/forms';
-  id: '__root__' | '/' | '/api-demo' | '/forms';
+  to: '/' | '/api-demo' | '/color-palette' | '/forms';
+  id: '__root__' | '/' | '/api-demo' | '/color-palette' | '/forms';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   ApiDemoRoute: typeof ApiDemoRoute;
+  ColorPaletteRoute: typeof ColorPaletteRoute;
   FormsRoute: typeof FormsRoute;
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/forms';
       fullPath: '/forms';
       preLoaderRoute: typeof FormsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/color-palette': {
+      id: '/color-palette';
+      path: '/color-palette';
+      fullPath: '/color-palette';
+      preLoaderRoute: typeof ColorPaletteRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     '/api-demo': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDemoRoute: ApiDemoRoute,
+  ColorPaletteRoute: ColorPaletteRoute,
   FormsRoute: FormsRoute,
 };
 export const routeTree = rootRouteImport
