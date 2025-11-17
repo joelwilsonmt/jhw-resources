@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root';
 import { Route as NpmPackagesRouteImport } from './routes/npm-packages';
 import { Route as FormsRouteImport } from './routes/forms';
+import { Route as ContentfulRouteImport } from './routes/contentful';
 import { Route as ColorPaletteRouteImport } from './routes/color-palette';
 import { Route as ApiDemoRouteImport } from './routes/api-demo';
 import { Route as IndexRouteImport } from './routes/index';
@@ -23,6 +24,11 @@ const NpmPackagesRoute = NpmPackagesRouteImport.update({
 const FormsRoute = FormsRouteImport.update({
   id: '/forms',
   path: '/forms',
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ContentfulRoute = ContentfulRouteImport.update({
+  id: '/contentful',
+  path: '/contentful',
   getParentRoute: () => rootRouteImport,
 } as any);
 const ColorPaletteRoute = ColorPaletteRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
   '/color-palette': typeof ColorPaletteRoute;
+  '/contentful': typeof ContentfulRoute;
   '/forms': typeof FormsRoute;
   '/npm-packages': typeof NpmPackagesRoute;
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
   '/color-palette': typeof ColorPaletteRoute;
+  '/contentful': typeof ContentfulRoute;
   '/forms': typeof FormsRoute;
   '/npm-packages': typeof NpmPackagesRoute;
 }
@@ -60,19 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute;
   '/api-demo': typeof ApiDemoRoute;
   '/color-palette': typeof ColorPaletteRoute;
+  '/contentful': typeof ContentfulRoute;
   '/forms': typeof FormsRoute;
   '/npm-packages': typeof NpmPackagesRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/api-demo' | '/color-palette' | '/forms' | '/npm-packages';
+  fullPaths:
+    | '/'
+    | '/api-demo'
+    | '/color-palette'
+    | '/contentful'
+    | '/forms'
+    | '/npm-packages';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/api-demo' | '/color-palette' | '/forms' | '/npm-packages';
+  to:
+    | '/'
+    | '/api-demo'
+    | '/color-palette'
+    | '/contentful'
+    | '/forms'
+    | '/npm-packages';
   id:
     | '__root__'
     | '/'
     | '/api-demo'
     | '/color-palette'
+    | '/contentful'
     | '/forms'
     | '/npm-packages';
   fileRoutesById: FileRoutesById;
@@ -81,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   ApiDemoRoute: typeof ApiDemoRoute;
   ColorPaletteRoute: typeof ColorPaletteRoute;
+  ContentfulRoute: typeof ContentfulRoute;
   FormsRoute: typeof FormsRoute;
   NpmPackagesRoute: typeof NpmPackagesRoute;
 }
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/forms';
       fullPath: '/forms';
       preLoaderRoute: typeof FormsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/contentful': {
+      id: '/contentful';
+      path: '/contentful';
+      fullPath: '/contentful';
+      preLoaderRoute: typeof ContentfulRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     '/color-palette': {
@@ -129,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDemoRoute: ApiDemoRoute,
   ColorPaletteRoute: ColorPaletteRoute,
+  ContentfulRoute: ContentfulRoute,
   FormsRoute: FormsRoute,
   NpmPackagesRoute: NpmPackagesRoute,
 };

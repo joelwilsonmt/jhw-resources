@@ -11,6 +11,7 @@ yarn-error.log*
 # Env
 .env*
 !.env.example
+!.env.local.example
 # Editors
 .vscode/*
 !.vscode/extensions.json

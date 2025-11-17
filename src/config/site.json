@@ -16,7 +16,8 @@
         "type": "dropdown",
         "items": [
           { "to": "/forms", "label": "Forms" },
-          { "to": "/api-demo", "label": "API Demo" }
+          { "to": "/api-demo", "label": "API Demo" },
+          { "to": "/contentful", "label": "Contentful Resources" }
         ]
       },
       {
@@ -32,7 +33,7 @@
   "pages": {
     "home": {
       "hero": {
-        "title": "JHW Demos & Resources",
+        "title": "Demos & Resources",
         "subtitle": "A production-ready React starter with TypeScript, Vite, Tailwind CSS, Shadcn/ui components, and powerful libraries for forms and data fetching."
       },
       "features": [
