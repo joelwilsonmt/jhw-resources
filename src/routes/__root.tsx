@@ -3,7 +3,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { NavigationDropdown } from '@/components/NavigationDropdown';
 import { DottedBackground } from '@/components/DottedBackground';
 import { Toaster } from 'sonner';
-import siteConfig from '@/config/site.json';
+import siteConfig from '@/config/site';
 
 export const Route = createRootRoute({
   component: () => (
@@ -24,26 +24,34 @@ export const Route = createRootRoute({
 
           {/* Center: Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {siteConfig.navigation.main.map((navItem: any, index) =>
-              navItem.type === 'link' ? (
-                <Link
-                  key={index}
-                  to={navItem.to as any}
-                  className="text-sm font-medium hover:text-primary transition-colors"
-                  activeProps={{
-                    className: 'text-primary',
-                  }}
-                >
-                  {navItem.label}
-                </Link>
-              ) : navItem.type === 'dropdown' ? (
-                <NavigationDropdown
-                  key={index}
-                  label={navItem.label}
-                  items={navItem.items}
-                />
-              ) : null
-            )}
+            {siteConfig.navigation.main.map((navItem, index) => {
+              if (navItem.type === 'link') {
+                return (
+                  <Link
+                    key={`${navItem.to}-${index}`}
+                    to={navItem.to}
+                    className="text-sm font-medium hover:text-primary transition-colors"
+                    activeProps={{
+                      className: 'text-primary',
+                    }}
+                  >
+                    {navItem.label}
+                  </Link>
+                );
+              }
+
+              if (navItem.type === 'dropdown') {
+                return (
+                  <NavigationDropdown
+                    key={`dropdown-${navItem.label}-${index}`}
+                    label={navItem.label}
+                    items={navItem.items}
+                  />
+                );
+              }
+
+              return null;
+            })}
           </nav>
 
           {/* Right: Theme Toggle */}
@@ -68,23 +76,27 @@ export const Route = createRootRoute({
 
             {/* Footer Navigation - All Screen Sizes */}
             <nav className="flex flex-wrap justify-center gap-4 text-sm">
-              {siteConfig.navigation.main.map((navItem: any, index) =>
-                navItem.type === 'link' ? (
-                  <Link
-                    key={index}
-                    to={navItem.to as any}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    activeProps={{
-                      className: 'text-primary',
-                    }}
-                  >
-                    {navItem.label}
-                  </Link>
-                ) : navItem.type === 'dropdown' ? (
-                  navItem.items.map((item: any, itemIndex: number) => (
+              {siteConfig.navigation.main.flatMap((navItem, index) => {
+                if (navItem.type === 'link') {
+                  return (
                     <Link
-                      key={`${index}-${itemIndex}`}
-                      to={item.to as any}
+                      key={`footer-link-${navItem.to}-${index}`}
+                      to={navItem.to}
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                      activeProps={{
+                        className: 'text-primary',
+                      }}
+                    >
+                      {navItem.label}
+                    </Link>
+                  );
+                }
+
+                if (navItem.type === 'dropdown') {
+                  return navItem.items.map((item, itemIndex) => (
+                    <Link
+                      key={`footer-dropdown-${item.to}-${index}-${itemIndex}`}
+                      to={item.to}
                       className="text-muted-foreground hover:text-primary transition-colors"
                       activeProps={{
                         className: 'text-primary',
@@ -92,9 +104,11 @@ export const Route = createRootRoute({
                     >
                       {item.label}
                     </Link>
-                  ))
-                ) : null
-              )}
+                  ));
+                }
+
+                return [];
+              })}
             </nav>
           </div>
         </div>

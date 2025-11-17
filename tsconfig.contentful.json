@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "outDir": "dist/contentful",
+    "rootDir": "contentful",
+    "resolveJsonModule": true
+  },
+  "include": ["contentful/**/*.ts", "contentful/**/*.cts"]
+}

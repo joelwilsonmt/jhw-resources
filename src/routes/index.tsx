@@ -15,7 +15,7 @@ import CountUp from 'react-countup';
 import Confetti from 'react-confetti';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
-import siteConfig from '@/config/site.json';
+import siteConfig from '@/config/site';
 
 function HomePage() {
   const [showConfetti, setShowConfetti] = useState(false);

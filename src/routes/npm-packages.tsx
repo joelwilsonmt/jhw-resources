@@ -22,7 +22,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { PageTransition } from '@/components/PageTransition';
 import { AnimatedText } from '@/components/AnimatedText';
-import siteConfig from '@/config/site.json';
+import siteConfig from '@/config/site';
 
 interface PackageLink {
   name: string;

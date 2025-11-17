@@ -71,6 +71,25 @@ This starter comes pre-configured with:
 - **Tailwind CSS**: Utility-first styling with PostCSS
 - **Vite**: Fast HMR and optimized builds
 
+## 🧱 Contentful demo
+
+This repo now includes a Contentful-powered resources page at `/contentful`.
+The flow is:
+
+1. Copy `.env.local.example` to `.env.local` and provide your Contentful space,
+   environment, and tokens (both Management and Delivery).
+2. Run `pnpm contentful:migrate` to compile the TypeScript migration and execute
+   it with the Contentful CLI (the CLI must already be installed globally).
+3. Inside Contentful, create a `Resource Landing Page` entry (slug `resources`),
+   plus `Resource Category` and `Resource Entry` entries.
+4. (Optional) Run `pnpm contentful:seed` to insert sample categories, resources,
+   and the landing page via the Contentful Management API.
+5. Boot the app with `pnpm dev` and visit `/contentful` to see the
+   data rendered with TanStack Query.
+
+If the environment variables are missing the page will fall back to mocked data
+so the UI remains interactive even before Contentful is connected.
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.

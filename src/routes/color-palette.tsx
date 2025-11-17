@@ -16,7 +16,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { AnimatedText } from '@/components/AnimatedText';
 import { motion } from 'motion/react';
 import ColorThief from 'colorthief';
-import siteConfig from '@/config/site.json';
+import siteConfig from '@/config/site';
 
 interface ColorData {
   hex: string;
