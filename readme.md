@@ -76,16 +76,19 @@ This starter comes pre-configured with:
 This repo now includes a Contentful-powered resources page at `/contentful`.
 The flow is:
 
-1. Copy `.env.local.example` to `.env.local` and provide your Contentful space,
-   environment, and tokens (both Management and Delivery).
+1. Copy `.env.local.example` to `.env.local` and provide your Contentful space
+   configuration and tokens (`CONTENTFUL_SPACE_ID`, `CONTENTFUL_ENVIRONMENT`,
+   `CONTENTFUL_DELIVERY_TOKEN`, and optionally `CONTENTFUL_PREVIEW_TOKEN`).
 2. Run `pnpm contentful:migrate` to compile the TypeScript migration and execute
    it with the Contentful CLI (the CLI must already be installed globally).
 3. Inside Contentful, create a `Resource Landing Page` entry (slug `resources`),
    plus `Resource Category` and `Resource Entry` entries.
 4. (Optional) Run `pnpm contentful:seed` to insert sample categories, resources,
    and the landing page via the Contentful Management API.
-5. Boot the app with `pnpm dev` and visit `/contentful` to see the
-   data rendered with TanStack Query.
+5. Boot the app with `pnpm dev` (or deploy to Netlify). The front end will call
+   the `/api/contentful` proxy so your delivery tokens stay on the server. Visit
+   `/contentful` to see the data rendered with TanStack Query.
+   - If you host the proxy at a different URL, update `VITE_CONTENTFUL_API_BASE`.
 
 If the environment variables are missing the page will fall back to mocked data
 so the UI remains interactive even before Contentful is connected.

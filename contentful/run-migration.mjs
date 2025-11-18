@@ -9,12 +9,13 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
 const spaceId = process.env.CONTENTFUL_SPACE_ID;
-const environmentId = process.env.CONTENTFUL_ENVIRONMENT || 'master';
+const environmentId = process.env.CONTENTFUL_ENVIRONMENT;
 const managementToken = process.env.CONTENTFUL_MANAGEMENT_TOKEN;
 
 const requiredVars = {
   CONTENTFUL_SPACE_ID: spaceId,
   CONTENTFUL_MANAGEMENT_TOKEN: managementToken,
+  CONTENTFUL_ENVIRONMENT: environmentId,
 };
 
 const missingVars = Object.entries(requiredVars)

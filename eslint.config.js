@@ -7,9 +7,12 @@ import prettier from 'eslint-config-prettier';
 import globals from 'globals';
 
 export default [
+  {
+    ignores: ['dist/**/*'],
+  },
   js.configs.recommended,
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx,cts}'],
     languageOptions: {
       parser: tsparser,
       globals: {
@@ -43,6 +46,26 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       'jsx-a11y/heading-has-content': 'off',
+    },
+  },
+  {
+    files: [
+      'vite.config.ts',
+      'netlify/**/*.ts',
+      'contentful/**/*.ts',
+      'contentful/**/*.cts',
+      'contentful/**/*.mjs',
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ['contentful/migrations/**/*.{ts,cts}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {

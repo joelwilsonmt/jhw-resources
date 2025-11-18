@@ -32,6 +32,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "netlify/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

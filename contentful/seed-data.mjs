@@ -2,13 +2,14 @@ import contentfulManagement from 'contentful-management';
 import process from 'node:process';
 
 const spaceId = process.env.CONTENTFUL_SPACE_ID;
-const environmentId = process.env.CONTENTFUL_ENVIRONMENT || 'master';
+const environmentId = process.env.CONTENTFUL_ENVIRONMENT;
 const managementToken = process.env.CONTENTFUL_MANAGEMENT_TOKEN;
 const locale = process.env.CONTENTFUL_DEFAULT_LOCALE || 'en-US';
 
 const requiredVars = {
   CONTENTFUL_SPACE_ID: spaceId,
   CONTENTFUL_MANAGEMENT_TOKEN: managementToken,
+  CONTENTFUL_ENVIRONMENT: environmentId,
 };
 
 const missing = Object.entries(requiredVars)
