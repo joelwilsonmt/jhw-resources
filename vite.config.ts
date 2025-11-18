@@ -77,5 +77,14 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
+    define: {
+      'import.meta.env.VITE_CONTENTFUL_API_BASE': JSON.stringify(
+        env.VITE_CONTENTFUL_API_BASE || '/api/contentful'
+      ),
+      'import.meta.env.VITE_CONTENTFUL_SPACE_ID': 'undefined',
+      'import.meta.env.VITE_CONTENTFUL_ENVIRONMENT': 'undefined',
+      'import.meta.env.VITE_CONTENTFUL_DELIVERY_TOKEN': 'undefined',
+      'import.meta.env.VITE_CONTENTFUL_PREVIEW_TOKEN': 'undefined',
+    },
   };
 });
