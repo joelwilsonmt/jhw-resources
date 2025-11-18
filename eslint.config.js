@@ -51,7 +51,6 @@ export default [
   {
     files: [
       'vite.config.ts',
-      'netlify/**/*.ts',
       'contentful/**/*.ts',
       'contentful/**/*.cts',
       'contentful/**/*.mjs',

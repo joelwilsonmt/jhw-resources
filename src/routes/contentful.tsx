@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import {
   fetchContentfulResourcePage,
   fallbackResourcePage,
-  isContentfulConfigured,
 } from '@/lib/contentful';
 import type {
   FilterField,
@@ -68,7 +67,6 @@ const CategoryIcon = ({
 };
 
 function ContentfulResourcesPage() {
-  const configured = isContentfulConfigured();
   const [activeFilters, setActiveFilters] = useState<
     Partial<Record<FilterField, string>>
   >({});
@@ -76,14 +74,11 @@ function ContentfulResourcesPage() {
   const query = useQuery({
     queryKey: ['contentfulResources', 'resources'],
     queryFn: () => fetchContentfulResourcePage('resources'),
-    enabled: configured,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
-  const pageData = configured
-    ? (query.data ?? fallbackResourcePage)
-    : fallbackResourcePage;
+  const pageData = query.data ?? fallbackResourcePage;
 
   const categoryMap = useMemo(() => {
     const map = new Map<string, ResourceCategory>();
@@ -171,7 +166,7 @@ function ContentfulResourcesPage() {
   };
 
   const clearFilters = () => setActiveFilters({});
-  const isUsingFallback = !configured || (!query.data && query.isFetched);
+  const isUsingFallback = !query.data && !query.isLoading;
   const lastUpdatedLabel = pageData.lastUpdated
     ? new Date(pageData.lastUpdated).toLocaleDateString()
     : undefined;
@@ -232,7 +227,7 @@ function ContentfulResourcesPage() {
           <div className="text-xs text-muted-foreground flex items-center justify-center gap-2">
             <Columns className="h-4 w-4" />
             <span>
-              {configured
+              {query.isSuccess
                 ? 'Live data from Contentful'
                 : 'Mock data – connect Contentful to go live'}
             </span>
@@ -244,17 +239,17 @@ function ContentfulResourcesPage() {
           </div>
         </section>
 
-        {!configured && (
+        {query.error && (
           <Card className="border-dashed border-primary/40 bg-primary/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-primary" />
-                Connect Contentful to replace mock data
+                Unable to load Contentful data
               </CardTitle>
               <CardDescription>
-                Add your Contentful credentials to <code>.env.local</code> and
-                run <code>pnpm contentful:migrate</code> to create the content
-                model, then input entries in the Contentful UI.
+                {query.error instanceof Error
+                  ? query.error.message
+                  : 'Check your Contentful credentials and try again.'}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -302,7 +297,7 @@ function ContentfulResourcesPage() {
               variant="outline"
               size="sm"
               onClick={() => query.refetch()}
-              disabled={query.isFetching || !configured}
+              disabled={query.isFetching}
             >
               <RefreshCw
                 className={cn('mr-2 h-4 w-4', {
@@ -313,7 +308,7 @@ function ContentfulResourcesPage() {
             </Button>
           </div>
 
-          {query.isLoading && configured ? (
+          {query.isLoading ? (
             <div className="flex items-center gap-3 rounded-xl border border-dashed border-muted px-4 py-6 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin" />
               <span>Loading from Contentful…</span>
